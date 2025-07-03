@@ -1,22 +1,13 @@
-name: firstworkflow
-on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+name: First Workflow
+on: [push]
 
 jobs:
   run-shell-commands:
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Run shell commands
-        run: |
-          echo "Hello, World!"
-          echo "This is a simple shell command execution in GitHub Actions."
-  build:
     runs-on: ubuntu-latest
- 
+    steps:
+      - name: echo a string
+        run: echo "Hello World"
+      - name: Multiline Command
+        run: |
+          node -v
+          npm -v
