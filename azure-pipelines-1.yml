@@ -1,18 +1,25 @@
+# test and upload my code as an artifact named Website
 jobs:
-- job: A
+- job: Build
+  pool:
+    vmImage: 'ubuntu-latest'
   steps:
-  - script: exit 1
+  - script: npm test
+  - task: PublishPipelineArtifact@1
+    inputs:
+      artifactName: Website
+      targetPath: '$(System.DefaultWorkingDirectory)'
 
-- job: B
-  dependsOn: A
-  condition: failed()
+# download the artifact and deploy it only if the build job succeeded
+- job: Deploy
+  pool:
+    vmImage: 'ubuntu-latest'
   steps:
-  - script: echo this will run when A fails
-
-- job: C
-  dependsOn:
-  - A
-  - B
-  condition: succeeded('B')
-  steps:
-  - script: echo this will run when B runs and succeeds
+  - checkout: none #skip checking out the default repository resource
+  - task: DownloadPipelineArtifact@2
+    displayName: 'Download Pipeline Artifact'
+    inputs:
+      artifactName: Website
+      targetPath: '$(Pipeline.Workspace)'
+  dependsOn: Build
+  condition: succeeded()
