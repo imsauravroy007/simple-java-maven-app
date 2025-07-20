@@ -1,4 +1,5 @@
 # Maven
+
 # Build your Java project and run tests with Apache Maven.
 # Add steps that analyze code, save build artifacts, deploy, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/java
@@ -20,13 +21,17 @@ steps:
     publishJUnitResults: true
     testResultsFiles: '**/surefire-reports/TEST-*.xml'
     goals: 'package'
-- task: ArtifactoryBuildPromotion@1
+- task: ArtifactoryGenericUpload@2
   inputs:
     artifactoryService: 'Artifactory'
-    buildName: '$(Build.DefinitionName)'
-    buildNumber: '$(Build.BuildNumber)'
-    targetRepo: 'testjava-gradle-dev'
-    status: 'Released'
-    includeDependencies: false
-    copy: false
-    dryRun: false
+    specSource: 'taskConfiguration'
+    fileSpec: |
+      {
+        "files": [
+          {
+            "pattern": "*.war",
+            "target": "testjava-gradle-dev"
+          }
+        ]
+      }
+    failNoOp: true
