@@ -29,7 +29,7 @@ steps:
       {
         "files": [
           {
-            "pattern": "*.war",
+            "pattern": ".war",
             "target": "testjava-gradle-dev"
           }
         ]
