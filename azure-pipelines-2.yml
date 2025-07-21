@@ -21,17 +21,15 @@ steps:
     publishJUnitResults: true
     testResultsFiles: '**/surefire-reports/TEST-*.xml'
     goals: 'package'
-- task: ArtifactoryGenericUpload@2
+
+
+- task: ArtifactoryMaven@2
   inputs:
-    artifactoryService: 'Artifactory'
-    specSource: 'taskConfiguration'
-    fileSpec: |
-      {
-        "files": [
-          {
-            "pattern": ".war",
-            "target": "testjava-gradle-dev"
-          }
-        ]
-      }
-    failNoOp: true
+        mavenPomFile: 'pom.xml'
+        goals: 'install'
+        artifactoryResolverService: 'Artifactory'
+        targetResolveReleaseRepo: 'testjava-gradle-release'
+        targetResolveSnapshotRepo: 'testjava-gradle-release'
+        artifactoryDeployService: 'Artifactory'
+        targetDeployReleaseRepo: 'testjava-gradle-dev-local'
+        targetDeploySnapshotRepo: 'testjava-gradle-dev-local'
