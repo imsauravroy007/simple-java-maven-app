@@ -14,7 +14,7 @@ steps:
 - task: Maven@4
   inputs:
     mavenPomFile: 'pom.xml'
-    goals: 'clean deploy'
+    goals: 'package'
     publishJUnitResults: true
     testResultsFiles: '**/surefire-reports/TEST-*.xml'
     javaHomeOption: 'JDKVersion'
@@ -28,9 +28,20 @@ steps:
     targetType: 'inline'
     script: 'env | sort'
 
-- task: ArtifactoryPublishBuildInfo@1
+# - task: ArtifactoryPublishBuildInfo@1
+#   inputs:
+#     artifactoryService: 'Artifactory'
+#     buildName: '$(Build.DefinitionName)'
+#     buildNumber: '$(Build.BuildNumber)'
+
+- task: ArtifactoryBuildPromotion@1
   inputs:
     artifactoryService: 'Artifactory'
     buildName: '$(Build.DefinitionName)'
     buildNumber: '$(Build.BuildNumber)'
-
+    targetRepo: 'testjava-gradle-release'
+    status: 'Released'
+    sourceRepo: 'testjava-gradle-dev-local'
+    includeDependencies: true
+    copy: false
+    dryRun: false
