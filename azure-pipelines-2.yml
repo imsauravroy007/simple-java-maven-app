@@ -28,11 +28,11 @@ steps:
     targetType: 'inline'
     script: 'env | sort'
 
-# - task: ArtifactoryPublishBuildInfo@1
-#   inputs:
-#     artifactoryService: 'Artifactory'
-#     buildName: '$(Build.DefinitionName)'
-#     buildNumber: '$(Build.BuildNumber)'
+- task: ArtifactoryPublishBuildInfo@1
+  inputs:
+    artifactoryService: 'Artifactory'
+    buildName: '$(Build.DefinitionName)'
+    buildNumber: '$(Build.BuildNumber)'
 
 - task: ArtifactoryBuildPromotion@1
   inputs:
