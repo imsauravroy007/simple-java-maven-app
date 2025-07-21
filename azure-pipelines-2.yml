@@ -28,19 +28,3 @@ steps:
     targetType: 'inline'
     script: 'env | sort'
 
-- task: ArtifactoryMaven@2
-  inputs:
-    mavenPomFile: 'pom.xml'
-    goals: 'install'
-    artifactoryResolverService: 'Artifactory'
-    targetResolveReleaseRepo: 'testjava-gradle-release'
-    targetResolveSnapshotRepo: 'testjava-gradle-release'
-    artifactoryDeployService: 'Artifactory'
-    targetDeployReleaseRepo: 'testjava-gradle-dev-local'
-    targetDeploySnapshotRepo: 'testjava-gradle-dev-local'
-
-- task: ArtifactoryPublishBuildInfo@1
-  inputs:
-    artifactoryService: 'Artifactory'
-    buildName: '$(Build.DefinitionName)'
-    buildNumber: '$(Build.BuildNumber)'
